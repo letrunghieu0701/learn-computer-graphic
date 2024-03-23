@@ -16,15 +16,21 @@ public class Graph : MonoBehaviour
     Transform[] points;
     private void Awake()
     {
-        points = new Transform[resolution];
+        points = new Transform[resolution * resolution];
 
         float step = 2f / resolution;
         Vector3 position = Vector3.zero;
         Vector3 scale = Vector3.one * step;
         Transform point;
-        for (int i = 0; i < resolution; i++)
+        for (int i = 0, x = 0, z = 0; i < resolution * resolution; i++, x++)
         {
-            position.x = (i + 0.5f) * step - 1f;
+            if (x == resolution)
+            {
+                x = 0;
+                z += 1;
+            }
+            position.x = (x + 0.5f) * step - 1f;
+            position.z = (z + 0.5f) * step - 1f;
 
             points[i] = point = Instantiate(pointPrefab);
             point.localPosition = position;
@@ -42,7 +48,7 @@ public class Graph : MonoBehaviour
         {
             point = points[i];
             position = point.localPosition;
-            position.y = mathFunc(position.x, Time.time);
+            position.y = mathFunc(position.x, position.z, Time.time);
             point.localPosition = position;
         }
     }

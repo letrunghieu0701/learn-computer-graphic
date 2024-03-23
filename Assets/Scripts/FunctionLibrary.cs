@@ -5,7 +5,7 @@ using static UnityEngine.Mathf;
 
 public static class FunctionLibrary
 {
-    public delegate float MathFunction(float pos_x, float time);
+    public delegate float MathFunction(float pos_x, float pos_z, float time);
 
     public enum FunctionName
     {
@@ -26,22 +26,22 @@ public static class FunctionLibrary
         return mathFunctions[functionName];
     }
 
-    public static float SinWave(float pos_x, float time)
+    public static float SinWave(float pos_x, float pos_z, float time)
     {
-        //float y = Sin(PI * (pos_x + time));
+        float y = Sin(PI * (pos_x + pos_z + + time));
         //float y = Sin(pos_x + Time.time);
-        float y = Sin(PI * pos_x + time);
+        //float y = Sin(PI * pos_x + time);
         return y;
     }
 
-    public static float MultiWave(float pos_x, float time)
+    public static float MultiWave(float pos_x, float pos_z, float time)
     {
         float y = Sin(PI * (pos_x + time));
-        y += 0.5f * Sin(2f * PI * (pos_x + time));
+        y += 0.5f * Sin(2f * PI * (pos_z + time));
         return y * (2f / 3f);
     }
 
-    public static float Ripple(float pos_x, float time)
+    public static float Ripple(float pos_x, float pos_z, float time)
     {
         float d = Mathf.Abs(pos_x);
         float y = Sin(PI * (4 * d - time)) / (1f + 10f * d);
