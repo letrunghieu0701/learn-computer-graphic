@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class Graph : MonoBehaviour
 {
-    public enum GraphFunction
-    {
-        Sin = 1,
-        Multi = 2,
-    };
-
     [SerializeField]
     private Transform pointPrefab;
 
@@ -17,7 +11,7 @@ public class Graph : MonoBehaviour
     private int resolution = 10;
 
     [SerializeField]
-    private GraphFunction graphFunction = GraphFunction.Sin;
+    private FunctionLibrary.FunctionName graphFunction = FunctionLibrary.FunctionName.Sin;
 
     Transform[] points;
     private void Awake()
@@ -39,31 +33,16 @@ public class Graph : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-
-    }
-
     void Update()
     {
         Transform point;
         Vector3 position;
+        FunctionLibrary.MathFunction mathFunc = FunctionLibrary.GetFunction(graphFunction);
         for (int i = 0; i < points.Length; i++)
         {
             point = points[i];
             position = point.localPosition;
-            switch (graphFunction)
-            {
-                case GraphFunction.Sin:
-                    position.y = FunctionLibrary.SinWave(position.x, Time.time);
-                    break;
-                case GraphFunction.Multi:
-                    position.y = FunctionLibrary.MultiWave(position.x, Time.time);
-                    break;
-                default:
-                    position.y = FunctionLibrary.SinWave(position.x, Time.time);
-                    break;
-            }
+            position.y = mathFunc(position.x, Time.time);
             point.localPosition = position;
         }
     }
