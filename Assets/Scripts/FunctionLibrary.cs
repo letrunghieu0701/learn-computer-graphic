@@ -38,12 +38,14 @@ public static class FunctionLibrary
     {
         float y = Sin(PI * (pos_x + time));
         y += 0.5f * Sin(2f * PI * (pos_z + time));
-        return y * (2f / 3f);
+        //return y / 1.5f; // 1.5 = sin + 0.5sin <=> [-1.5; 1.5]
+        y += Sin(PI * (pos_x + pos_z + 0.25f * time));
+        return y / 2.5f; // 2.5 = sin + 0.5sin + sin <=> [-2.5; 2.5]
     }
 
     public static float Ripple(float pos_x, float pos_z, float time)
     {
-        float d = Mathf.Abs(pos_x);
+        float d = Mathf.Sqrt(pos_x * pos_x + pos_z * pos_z);
         float y = Sin(PI * (4 * d - time)) / (1f + 10f * d);
         return y;
     }
