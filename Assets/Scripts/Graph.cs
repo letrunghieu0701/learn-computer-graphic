@@ -19,7 +19,6 @@ public class Graph : MonoBehaviour
         points = new Transform[resolution * resolution];
 
         float step = 2f / resolution;
-        Vector3 position = Vector3.zero;
         Vector3 scale = Vector3.one * step;
         Transform point;
         for (int i = 0, x = 0, z = 0; i < resolution * resolution; i++, x++)
@@ -29,11 +28,8 @@ public class Graph : MonoBehaviour
                 x = 0;
                 z += 1;
             }
-            position.x = (x + 0.5f) * step - 1f;
-            position.z = (z + 0.5f) * step - 1f;
 
             points[i] = point = Instantiate(pointPrefab);
-            point.localPosition = position;
             point.localScale = scale;
             point.SetParent(this.transform, false);
         }
@@ -41,15 +37,21 @@ public class Graph : MonoBehaviour
 
     void Update()
     {
-        Transform point;
-        Vector3 position;
         FunctionLibrary.MathFunction mathFunc = FunctionLibrary.GetFunction(graphFunction);
-        for (int i = 0; i < points.Length; i++)
+        float time = Time.time;
+        float step = 2f / resolution;
+
+        float v = 0.5f * step - 1f;
+        for (int i = 0, x = 0, z = 0; i < points.Length; i++, x++)
         {
-            point = points[i];
-            position = point.localPosition;
-            position.y = mathFunc(position.x, position.z, Time.time);
-            point.localPosition = position;
+            if (x == resolution)
+            {
+                x = 0;
+                z += 1;
+                v = (z + 0.5f) * step - 1f;
+            }
+            float u = (x + 0.5f) * step - 1f;
+            points[i].localPosition = mathFunc(u, v, time);
         }
     }
 }

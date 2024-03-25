@@ -210,7 +210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointPrefab: {fileID: 6366675602017751858, guid: 387075548f0cd8c4e8c365f21d85458d, type: 3}
-  resolution: 60
+  resolution: 72
   graphFunction: 2
 --- !u!4 &197812407
 Transform:
